@@ -16,8 +16,7 @@ function App() {
         <MainContent />
       </div>
       <div>
-        <div className="">Profile</div>
-        <UserProfile name="Alice" age="27" bio="Loves hiking and photography" />
+        <UserProfile name="Alice" age="25" bio="Loves hiking and photography" />
       </div>
       <div>
         <Footer />
