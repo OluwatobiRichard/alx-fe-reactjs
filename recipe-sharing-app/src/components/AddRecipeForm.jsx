@@ -1,36 +1,43 @@
 import { useState } from 'react';
-import useRecipeStore from './recipeStore';
+import { useRecipeStore } from '../components/recipeStore';
 
 const AddRecipeForm = () => {
-    const addRecipe = useRecipeStore(state => state.addRecipe);
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
+  const addRecipe = useRecipeStore((state) => state.addRecipe);
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        addRecipe({ id: Date.now(), title, description });
-        setTitle('');
-        setDescription('');
-    };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (title && description) {
+      addRecipe({ id: Date.now(), title, description });
+      setTitle('');
+      setDescription('');
+    } else {
+      alert('Both fields are required!');
+    }
+  };
 
-    return (
-        <form onSubmit={handleSubmit} className='flex flex-col'>
-            <input
-                type="text"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="Title"
-                className='my-0.5 rounded-md p-2'
-            />
-            <textarea
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="Description"
-                className='my-2 rounded-md p-2 columns-lg'
-            />
-            <button type="submit">Add Recipe</button>
-        </form>
-    );
+  return (
+    <form onSubmit={handleSubmit} style={{ padding: '20px' }}>
+      <h2>Add Recipe</h2>
+      <input
+        type="text"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        placeholder="Recipe Title"
+        style={{ display: 'block', margin: '10px 0', padding: '10px' }}
+      />
+      <textarea
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        placeholder="Recipe Description"
+        style={{ display: 'block', margin: '10px 0', padding: '10px' }}
+      />
+      <button type="submit" style={{ padding: '10px 20px', cursor: 'pointer' }}>
+        Add Recipe
+      </button>
+    </form>
+  );
 };
 
 export default AddRecipeForm;
