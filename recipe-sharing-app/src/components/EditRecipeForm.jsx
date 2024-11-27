@@ -1,33 +1,35 @@
 import { useState } from 'react';
-import { useRecipeStore } from './recipeStore';
+import { useRecipeStore } from '../store/recipeStore';
 
 const EditRecipeForm = ({ recipe }) => {
-    const [title, setTitle] = useState(recipe.title);
-    const [description, setDescription] = useState(recipe.description);
-    const updateRecipe = useRecipeStore(state => state.updateRecipe);
+  const updateRecipe = useRecipeStore((state) => state.updateRecipe);
+  const [title, setTitle] = useState(recipe.title);
+  const [description, setDescription] = useState(recipe.description);
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const updatedRecipe = { ...recipe, title, description };
-        updateRecipe(updatedRecipe);
-    };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    updateRecipe({ ...recipe, title, description });
+  };
 
-    return (
-        <form onSubmit={handleSubmit}>
-            <input
-                type="text"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="Title"
-            />
-            <textarea
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="Description"
-            />
-            <button type="submit">Update Recipe</button>
-        </form>
-    );
+  return (
+    <form onSubmit={handleSubmit} style={{ margin: '20px 0' }}>
+      <h3>Edit Recipe</h3>
+      <input
+        type="text"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        style={{ display: 'block', margin: '10px 0', padding: '10px' }}
+      />
+      <textarea
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        style={{ display: 'block', margin: '10px 0', padding: '10px' }}
+      />
+      <button type="submit" style={{ padding: '10px 20px', cursor: 'pointer' }}>
+        Save Changes
+      </button>
+    </form>
+  );
 };
 
 export default EditRecipeForm;
