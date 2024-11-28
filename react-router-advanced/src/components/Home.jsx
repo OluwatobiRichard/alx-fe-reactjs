@@ -1,29 +1,36 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import Home from "./components/Home";
+import Profile from "./component/Profile";
+import BlogPost from "./components/BlogPost";
+import ProtectedRoute from "./components/ProtectedRoute";
+import useAuth from "./components/useAuth";
 
-const Home = () => {
+const App = () => {
+    const auth = useAuth();
+
     return (
-        <div>
-            <h1>Welcome to the React Router Demo</h1>
-            <p>
-                This is the home page. Use the links below to explore different
-                routing features.
-            </p>
-            <nav>
-                <ul>
-                    <li>
-                        <Link to="/profile">Go to Profile</Link>
-                    </li>
-                    <li>
-                        <Link to="/blog/1">View Blog Post 1</Link>
-                    </li>
-                    <li>
-                        <Link to="/blog/2">View Blog Post 2</Link>
-                    </li>
-                </ul>
-            </nav>
-        </div>
+        <Router>
+            <div>
+                <button onClick={auth.isAuthenticated ? auth.logout : auth.login}>
+                    {auth.isAuthenticated ? "Logout" : "Login"}
+                </button>
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route
+                        path="/profile/*"
+                        element={
+                            <ProtectedRoute>
+                                <Profile />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route path="/blog/:id" element={<BlogPost />} />
+                    <Route path="*" element={<Navigate to="/" />} />
+                </Routes>
+            </div>
+        </Router>
     );
 };
 
-export default Home;
+export default App;

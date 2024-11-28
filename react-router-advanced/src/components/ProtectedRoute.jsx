@@ -1,7 +1,10 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 
-const ProtectedRoute = ({ isAuth, children }) => {
+const ProtectedRoute = ({ children }) => {
+    const isAuth = useAuth();
+
     return isAuth ? children : <Navigate to="/" />;
 };
 
