@@ -41,8 +41,17 @@ const TodoList = () => {
             <button onClick={addTodo}>Add</button>
             <ul>
                 {todos.map((todo) => (
-                    <li key={todo.id} style={{ textDecoration: todo.completed ? "line-through" : "none" }}>
-                        <span onClick={() => toggleTodo(todo.id)}>{todo.text}</span>
+                    <li key={todo.id}>
+                        <span
+                            style={{
+                                textDecoration: todo.completed
+                                    ? "line-through"
+                                    : "none",
+                            }}
+                            onClick={() => toggleTodo(todo.id)}
+                        >
+                            {todo.text}
+                        </span>
                         <button onClick={() => deleteTodo(todo.id)}>Delete</button>
                     </li>
                 ))}

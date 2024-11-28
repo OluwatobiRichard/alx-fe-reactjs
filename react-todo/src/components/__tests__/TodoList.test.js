@@ -1,6 +1,6 @@
 import React from "react";
 import { render, fireEvent, screen } from "@testing-library/react";
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 import TodoList from "../components/TodoList";
 
 test("renders initial todos", () => {
@@ -12,10 +12,10 @@ test("renders initial todos", () => {
 test("adds a new todo", () => {
     render(<TodoList />);
     fireEvent.change(screen.getByPlaceholderText("Add a new todo"), {
-        target: { value: "Test new todo" },
+        target: { value: "Test Todo" },
     });
     fireEvent.click(screen.getByText("Add"));
-    expect(screen.getByText("Test new todo")).toBeInTheDocument();
+    expect(screen.getByText("Test Todo")).toBeInTheDocument();
 });
 
 test("toggles a todo", () => {
@@ -23,6 +23,8 @@ test("toggles a todo", () => {
     const todo = screen.getByText("Learn React");
     fireEvent.click(todo);
     expect(todo).toHaveStyle("text-decoration: line-through");
+    fireEvent.click(todo);
+    expect(todo).toHaveStyle("text-decoration: none");
 });
 
 test("deletes a todo", () => {
