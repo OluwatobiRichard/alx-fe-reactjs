@@ -9,6 +9,8 @@ const RegistrationForm = () => {
 
     const [errors, setErrors] = useState({});
 
+    const { username, email, password } = formData; // Destructure formData here
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
@@ -16,9 +18,9 @@ const RegistrationForm = () => {
 
     const validate = () => {
         const newErrors = {};
-        if (!formData.username) newErrors.username = "Username is required";
-        if (!formData.email) newErrors.email = "Email is required";
-        if (!formData.password) newErrors.password = "Password is required";
+        if (!username) newErrors.username = "Username is required";
+        if (!email) newErrors.email = "Email is required";
+        if (!password) newErrors.password = "Password is required";
         return newErrors;
     };
 
@@ -39,7 +41,7 @@ const RegistrationForm = () => {
                 <input
                     type="text"
                     name="username"
-                    value={formData.username}
+                    value={username} // Use destructured variable
                     onChange={handleChange}
                 />
                 {errors.username && <span>{errors.username}</span>}
@@ -49,7 +51,7 @@ const RegistrationForm = () => {
                 <input
                     type="email"
                     name="email"
-                    value={formData.email}
+                    value={email} // Use destructured variable
                     onChange={handleChange}
                 />
                 {errors.email && <span>{errors.email}</span>}
@@ -59,7 +61,7 @@ const RegistrationForm = () => {
                 <input
                     type="password"
                     name="password"
-                    value={formData.password}
+                    value={password} // Use destructured variable
                     onChange={handleChange}
                 />
                 {errors.password && <span>{errors.password}</span>}
