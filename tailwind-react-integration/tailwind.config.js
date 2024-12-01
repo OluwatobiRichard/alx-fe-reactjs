@@ -1,7 +1,8 @@
 module.exports = {
-  content: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
+  content: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"], // Paths to your template files
   theme: {
-    extend: {},
+    extend: {}, // Extend default styles here if needed
   },
-  plugins: [],
+  darkMode: "class", // Enable class-based dark mode (optional)
+  plugins: [], // Add Tailwind plugins if needed
 };
