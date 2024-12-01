@@ -1,8 +1,15 @@
 module.exports = {
-  content: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
+  purge: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"], // Specify files to scan for classes
+  darkMode: "class", // 'media' or 'class'
   theme: {
-    extend: {},
+    extend: {}, // Customize theme
   },
-  darkMode: "class", // Enable class-based dark mode
+  variants: {
+    extend: {
+      // Example: Enable additional variants for specific utilities
+      backgroundColor: ["active", "hover"],
+      textColor: ["focus"],
+    },
+  },
   plugins: [],
 };
