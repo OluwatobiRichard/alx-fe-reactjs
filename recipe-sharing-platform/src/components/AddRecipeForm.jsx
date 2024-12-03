@@ -8,32 +8,14 @@ const AddRecipeForm = () => {
     steps: "",
   });
 
-  // State for validation errors
-  const [errors, setErrors] = useState({});
-
-  // Validation function
-  const validate = () => {
-    const newErrors = {};
-    if (!recipe.title) {
-      newErrors.title = "Recipe title is required.";
-    }
-    if (!recipe.ingredients) {
-      newErrors.ingredients = "Ingredients are required.";
-    } else if (recipe.ingredients.split(",").length < 2) {
-      newErrors.ingredients = "Please include at least two ingredients.";
-    }
-    if (!recipe.steps) {
-      newErrors.steps = "Preparation steps are required.";
-    }
-    return newErrors;
-  };
+  const [error, setError] = useState("");
 
   // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setRecipe((prevRecipe) => ({
       ...prevRecipe,
-      [name]: value,
+      [name]: value, // Dynamically update the respective field using target.value
     }));
   };
 
@@ -41,22 +23,28 @@ const AddRecipeForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const validationErrors = validate(); // Run validation
-    setErrors(validationErrors);
-
-    // If no errors, proceed with submission
-    if (Object.keys(validationErrors).length === 0) {
-      console.log("Submitted Recipe:", recipe);
-
-      // Reset form and errors
-      setRecipe({ title: "", ingredients: "", steps: "" });
-      setErrors({});
+    // Basic validation
+    if (!recipe.title || !recipe.ingredients || !recipe.steps) {
+      setError("All fields are required.");
+      return;
     }
+
+    setError(""); // Clear any previous errors
+    console.log("Submitted Recipe:", recipe);
+
+    // Reset form
+    setRecipe({ title: "", ingredients: "", steps: "" });
   };
 
   return (
     <div className="p-6 max-w-4xl mx-auto bg-white shadow-md rounded">
       <h2 className="text-2xl font-bold mb-4">Add a New Recipe</h2>
+
+      {error && (
+        <p className="text-red-500 mb-4">
+          {error}
+        </p>
+      )}
 
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Recipe Title */}
@@ -70,12 +58,9 @@ const AddRecipeForm = () => {
             name="title"
             value={recipe.title}
             onChange={handleChange}
-            className={`w-full p-2 border rounded ${
-              errors.title ? "border-red-500" : "border-gray-300"
-            }`}
+            className="w-full p-2 border rounded"
             placeholder="Enter the recipe title"
           />
-          {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title}</p>}
         </div>
 
         {/* Ingredients */}
@@ -88,15 +73,10 @@ const AddRecipeForm = () => {
             name="ingredients"
             value={recipe.ingredients}
             onChange={handleChange}
-            className={`w-full p-2 border rounded ${
-              errors.ingredients ? "border-red-500" : "border-gray-300"
-            }`}
+            className="w-full p-2 border rounded"
             placeholder="Enter the ingredients, separated by commas"
             rows="4"
           />
-          {errors.ingredients && (
-            <p className="text-red-500 text-sm mt-1">{errors.ingredients}</p>
-          )}
         </div>
 
         {/* Preparation Steps */}
@@ -109,13 +89,10 @@ const AddRecipeForm = () => {
             name="steps"
             value={recipe.steps}
             onChange={handleChange}
-            className={`w-full p-2 border rounded ${
-              errors.steps ? "border-red-500" : "border-gray-300"
-            }`}
+            className="w-full p-2 border rounded"
             placeholder="Enter the preparation steps"
             rows="6"
           />
-          {errors.steps && <p className="text-red-500 text-sm mt-1">{errors.steps}</p>}
         </div>
 
         {/* Submit Button */}
