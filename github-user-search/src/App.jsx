@@ -32,7 +32,7 @@ const App = () => {
                 <div>
                     <img src={user.avatar_url} alt={user.login} />
                     <h2>{user.name}</h2>
-                    <a href={user.html_url} target="_blank" rel="noreferrer">
+                    <a href={user.html_url} target="_blank" rel="noopener noreferrer">
                         View Profile
                     </a>
                 </div>
