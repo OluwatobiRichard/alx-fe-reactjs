@@ -1,12 +1,25 @@
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_GITHUB_API_URL;
+const API_URL = "https://api.github.com";
 
-export const fetchUserData = async (username) => {
+/**
+ * Fetch users based on advanced search criteria.
+ * @param {Object} filters - Search filters including username, location, and minRepos.
+ * @returns {Promise<Object[]>} - Resolves with an array of user objects.
+ * @throws {Error} - Throws if the request fails.
+ */
+export const fetchUsers = async (filters) => {
+    const { username, location, minRepos } = filters;
+
+    // Construct the search query
+    let query = username ? `${username} in:login` : '';
+    if (location) query += ` location:${location}`;
+    if (minRepos) query += ` repos:>${minRepos}`;
+
     try {
-        const response = await axios.get(`${API_URL}/users/${username}`);
-        return response.data;
+        const response = await axios.get(`${API_URL}/search/users?q=${encodeURIComponent(query)}`);
+        return response.data.items; // Array of user objects
     } catch (error) {
-        throw error;
+        throw new Error('Unable to fetch user data');
     }
 };
