@@ -1,15 +1,19 @@
-["https://api.github.com"]
+import axios from 'axios';
 
-const BASE_URL = "https://api.github.com";
+// Use the API base URL from environment variables
+const API_URL = import.meta.env.VITE_GITHUB_API_URL; // Ensure this is correctly defined in the .env file
 
+/**
+ * Fetch user data from GitHub API by username
+ * @param {string} username - GitHub username to search for
+ * @returns {Promise<Object>} - Resolves with user data object
+ * @throws {Error} - Throws if the request fails
+ */
 export const fetchUserData = async (username) => {
     try {
-        const response = await fetch(`https://api.github.com/users/${username}`);
-        if (!response.ok) {
-            throw new Error("Looks like we cant find the user");
-        }
-        return await response.json();
+        const response = await axios.get(`${API_URL}/users/${username}`);
+        return response.data;
     } catch (error) {
-        throw error;
+        throw new Error('Unable to fetch user data'); // Friendly error message
     }
 };
