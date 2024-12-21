@@ -13,7 +13,7 @@ const Search = ({ onSearch }) => {
         setUser(null);
 
         try {
-            const result = await onSearch(username); // Call the search function passed via props
+            const result = await onSearch(username); // Fetch user data
             setUser(result);
         } catch {
             setError(true);
@@ -54,3 +54,26 @@ const Search = ({ onSearch }) => {
                     </p>
                 )}
                 {user && (
+                    <div className="user-card p-4 bg-white rounded-lg shadow-lg border border-gray-200 text-center">
+                        <img
+                            src={user.avatar_url}
+                            alt={`${user.login}'s avatar`}
+                            className="w-24 h-24 rounded-full mx-auto mb-4"
+                        />
+                        <h3 className="text-lg font-bold">{user.login}</h3>
+                        <a
+                            href={user.html_url}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="text-blue-500 hover:underline"
+                        >
+                            View Profile
+                        </a>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+};
+
+export default Search;
