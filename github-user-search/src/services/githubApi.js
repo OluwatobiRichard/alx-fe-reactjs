@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// Use the API base URL from environment variables
-const API_URL = import.meta.env.VITE_GITHUB_API_URL; // Ensure this is correctly defined in the .env file
+// Explicitly set the GitHub API base URL
+const API_URL = "https://api.github.com";
 
 /**
  * Fetch user data from GitHub API by username
