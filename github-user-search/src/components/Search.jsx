@@ -1,10 +1,9 @@
-// src/components/Search.jsx
 import React, { useState } from 'react';
 import { fetchUserData } from '../services/githubService';
 
 function Search() {
   const [username, setUsername] = useState('');
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -14,11 +13,11 @@ function Search() {
     setError(null);
 
     try {
-      const data = await fetchUserData(username);
-      setUserData(data);
+      const data = await fetchUserData(username); // Assuming fetchUserData returns an array
+      setUserData(Array.isArray(data) ? data : [data]); // Normalize single object to array
     } catch (error) {
-      setError("Looks like we cant find the user");
-      setUserData(null);
+      setError("Looks like we can't find the user");
+      setUserData([]);
     } finally {
       setIsLoading(false);
     }
@@ -49,30 +48,33 @@ function Search() {
 
       {error && (
         <div className="text-red-500 text-center py-4">
-          Looks like we cant find the user
+          {error}
         </div>
       )}
 
-      {userData && !isLoading && !error && (
-        <div className="border rounded-lg p-6">
-          <img
-            src={userData.avatar_url}
-            alt={userData.login}
-            className="w-32 h-32 rounded-full mx-auto mb-4"
-          />
-          <h2 className="text-xl font-bold text-center mb-2">
-            {userData.login}
-          </h2>
-          <div className="text-center mb-4">
-            
-              href={userData.html_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-500 hover:underline"
-            <a>
-              View Profile
-            </a>
-          </div>
+      {!isLoading && !error && userData.length > 0 && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {userData.map((user) => (
+            <div
+              key={user.id}
+              className="border rounded-lg p-6 text-center shadow-lg"
+            >
+              <img
+                src={user.avatar_url}
+                alt={user.login}
+                className="w-32 h-32 rounded-full mx-auto mb-4"
+              />
+              <h2 className="text-xl font-bold mb-2">{user.login}</h2>
+              <a
+                href={user.html_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-500 hover:underline"
+              >
+                View Profile
+              </a>
+            </div>
+          ))}
         </div>
       )}
     </div>
