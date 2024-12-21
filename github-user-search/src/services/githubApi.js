@@ -11,9 +11,10 @@ const API_URL = "https://api.github.com";
  */
 export const fetchUserData = async (username) => {
     try {
+        // Explicitly use the base URL in the request
         const response = await axios.get(`${API_URL}/users/${username}`);
         return response.data;
     } catch (error) {
-        throw new Error('Unable to fetch user data'); // Friendly error message
+        throw new Error('Unable to fetch user data');
     }
 };
