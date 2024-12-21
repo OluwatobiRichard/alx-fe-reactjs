@@ -1,64 +1,44 @@
-// src/App.jsx
-import { useState } from 'react';
-import SearchForm from './components/SearchForm';
-import { searchUser } from './services/githubApi';
+import React, { useState } from 'react';
+import Search from './components/Search';
+import { fetchUserData } from './services/githubService';
 
-function App() {
-  const [userData, setUserData] = useState(null);
-  const [error, setError] = useState(null);
+const App = () => {
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(false);
 
-  const handleSearch = async (username) => {
-    try {
-      const data = await searchUser(username);
-      setUserData(data);
-      setError(null);
-    } catch (err) {
-      setError('User not found');
-      setUserData(null);
-    }
-  };
+    const handleSearch = async (username) => {
+        setLoading(true);
+        setError(false);
+        setUser(null);
 
-  return (
-    <div className="container mx-auto px-4 py-8 max-w-2xl">
-      <h1 className="text-3xl font-bold mb-8 text-center">
-        GitHub User Search
-      </h1>
-      
-      <SearchForm onSearch={handleSearch} />
-      
-      {error && (
-        <div className="text-red-500 text-center">
-          {error}
+        try {
+            const data = await fetchUserData(username);
+            setUser(data);
+        } catch {
+            setError(true);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <div className="App">
+            <h1>GitHub User Search</h1>
+            <Search onSearch={handleSearch} />
+            {loading && <p>Loading...</p>}
+            {error && <p>Looks like we can't find the user.</p>}
+            {user && (
+                <div>
+                    <img src={user.avatar_url} alt={user.login} />
+                    <h2>{user.name}</h2>
+                    <a href={user.html_url} target="_blank" rel="noreferrer">
+                        View Profile
+                    </a>
+                </div>
+            )}
         </div>
-      )}
-
-      {userData && (
-        <div className="border rounded-lg p-4">
-          <img 
-            src={userData.avatar_url} 
-            alt={userData.login}
-            className="w-32 h-32 rounded-full mx-auto mb-4" 
-          />
-          <h2 className="text-xl font-bold text-center mb-2">
-            {userData.name || userData.login}
-          </h2>
-          <p className="text-center text-gray-600">
-            {userData.bio || 'No bio available'}
-          </p>
-          <div className="mt-4 text-center">
-            <a 
-              href={userData.html_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-500 hover:underline"
-            >
-              View Profile
-            </a>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-}
+    );
+};
 
 export default App;
